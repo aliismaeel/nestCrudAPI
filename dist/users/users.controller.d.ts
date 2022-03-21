@@ -14,6 +14,7 @@ export declare class UsersController {
     getAllUser(): Promise<(import("mongoose").Document<unknown, any, User> & User & {
         _id: import("mongoose").Types.ObjectId;
     })[]>;
+    userProfile(req: any): Promise<any>;
     getUser(id: string): Promise<User>;
     updateUser(id: string, updatedUser: User): Promise<User>;
     deleteUser(id: string): Promise<(import("mongoose").Document<unknown, any, User> & User & {

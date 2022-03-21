@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Patch } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Patch, Request, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { User, UserDto } from './user.model';
 import { UsersService } from './users.service';
 
@@ -14,6 +15,13 @@ export class UsersController {
   @Get()
   async getAllUser() {
     return await this.userService.getAllUsers();
+  }
+
+  @Get('profile')
+  @UseGuards(AuthGuard('jwt'))
+  async userProfile(@Request() req){
+    console.log('From controller....')
+    return req.user;
   }
 
   @Get(':id')
@@ -35,4 +43,5 @@ export class UsersController {
   async login(@Body() loginData:UserDto) {
     return await this.userService.login(loginData.userEmail, loginData.userPassword)
   }
+  
 }

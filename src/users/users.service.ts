@@ -72,7 +72,14 @@ export class UsersService {
     }
 
     const result = await this.PasswordHasherService.comparePassword(password, user.userPassword);
-    const token = await this.jwtService.signAsync({ id: user.userEmail, userName: user.userName });
+    const token = await this.jwtService.signAsync(
+      { 
+        userEmail: user.userEmail,
+        userName: user.userName 
+      },
+      {
+        expiresIn: '1d',
+      });
     if (result) {
       return { token }
     } else {
@@ -80,4 +87,14 @@ export class UsersService {
     }
   }
 
+  async isValidateByUser(payloads: any) {
+    console.log('From UserService...')
+    const foundUser = await this.userModel.findOne({userEmail: payloads.userEmail});
+    if(foundUser){
+       return true;
+    }
+    else{
+      return false;
+    }
+  }
 }

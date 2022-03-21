@@ -23,4 +23,5 @@ export declare class UsersService {
         _id: import("mongoose").Types.ObjectId;
     })[]>;
     login(email: any, password: any): Promise<LoginResp>;
+    isValidateByUser(payloads: any): Promise<boolean>;
 }
