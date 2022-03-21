@@ -22,7 +22,7 @@ export class JwtStrategyService extends PassportStrategy (Strategy)
             return { userId: payloads.userEmail, userName: payloads.userName };
         }
         else{
-            throw new UnauthorizedException('invalid credentials');
+            throw new UnauthorizedException('invalid credentials'):
         }
     }
 } 
