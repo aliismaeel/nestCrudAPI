@@ -31,9 +31,9 @@ let UsersService = class UsersService {
             throw new common_1.UnauthorizedException(`User already exists with this ${newUser.userEmail} id...`);
         }
         newUser.userPassword = await this.PasswordHasherService.passwordHash(newUser.userPassword);
-        user = new this.userModel((0, lodash_1.pick)(newUser, ['userName', 'userEmail', 'userPassword']));
+        user = new this.userModel((0, lodash_1.pick)(newUser, ['userName', 'userEmail', 'userPassword', 'userRole']));
         await user.save();
-        const result = (0, lodash_1.pick)(user, ["_id", "userName", "userEmail"]);
+        const result = (0, lodash_1.pick)(user, ["_id", "userName", "userEmail", "userRole"]);
         return result;
     }
     async getAllUsers() {
@@ -78,7 +78,8 @@ let UsersService = class UsersService {
         const result = await this.PasswordHasherService.comparePassword(password, user.userPassword);
         const token = await this.jwtService.signAsync({
             userEmail: user.userEmail,
-            userName: user.userName
+            userName: user.userName,
+            userRole: user.userRole
         }, {
             expiresIn: '1d',
         });

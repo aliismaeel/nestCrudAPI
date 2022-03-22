@@ -1,6 +1,7 @@
-import { Body, Controller, Delete, Get, Param, Post, Patch, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Patch, Request, UseGuards, SetMetadata } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { User, UserDto } from './user.model';
+import { RolesGuard } from '.././common/guards/roles.guard';
+import { User, UserDto, UserRole } from './user.model';
 import { UsersService } from './users.service';
 
 @Controller('users')
@@ -18,7 +19,8 @@ export class UsersController {
   }
 
   @Get('profile')
-  @UseGuards(AuthGuard('jwt'))
+  @SetMetadata('roles', [UserRole.admin, UserRole.superAdmin])
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   async userProfile(@Request() req){
     console.log('From controller....')
     return req.user;

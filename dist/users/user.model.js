@@ -1,7 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserDto = exports.userSchema = void 0;
+exports.UserDto = exports.userSchema = exports.UserRole = void 0;
 const mongoose = require("mongoose");
+var UserRole;
+(function (UserRole) {
+    UserRole["admin"] = "admin";
+    UserRole["superAdmin"] = "superAdmin";
+})(UserRole = exports.UserRole || (exports.UserRole = {}));
 exports.userSchema = new mongoose.Schema({
     userName: {
         type: String,
@@ -13,6 +18,12 @@ exports.userSchema = new mongoose.Schema({
     },
     userPassword: {
         type: String,
+        required: true
+    },
+    userRole: {
+        type: String,
+        enum: ['admin', 'superadmin', 'user'],
+        default: 'user',
         required: true
     }
 });

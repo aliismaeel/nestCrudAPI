@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersController = void 0;
 const common_1 = require("@nestjs/common");
 const passport_1 = require("@nestjs/passport");
+const roles_guard_1 = require(".././common/guards/roles.guard");
 const user_model_1 = require("./user.model");
 const users_service_1 = require("./users.service");
 let UsersController = class UsersController {
@@ -59,7 +60,8 @@ __decorate([
 ], UsersController.prototype, "getAllUser", null);
 __decorate([
     (0, common_1.Get)('profile'),
-    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
+    (0, common_1.SetMetadata)('roles', [user_model_1.UserRole.admin, user_model_1.UserRole.superAdmin]),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), roles_guard_1.RolesGuard),
     __param(0, (0, common_1.Request)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

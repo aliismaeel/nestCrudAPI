@@ -19,9 +19,9 @@ export class UsersService {
 
     newUser.userPassword = await this.PasswordHasherService.passwordHash(newUser.userPassword);
 
-    user = new this.userModel(pick(newUser, ['userName', 'userEmail', 'userPassword']));
+    user = new this.userModel(pick(newUser, ['userName', 'userEmail', 'userPassword', 'userRole']));
     await user.save();
-    const result = pick(user, ["_id", "userName", "userEmail"]);
+    const result = pick(user, ["_id", "userName", "userEmail", "userRole"]);
     return result;
   }
 
@@ -75,7 +75,8 @@ export class UsersService {
     const token = await this.jwtService.signAsync(
       { 
         userEmail: user.userEmail,
-        userName: user.userName 
+        userName: user.userName,
+        userRole: user.userRole 
       },
       {
         expiresIn: '1d',
