@@ -16,6 +16,7 @@ exports.UsersController = void 0;
 const common_1 = require("@nestjs/common");
 const passport_1 = require("@nestjs/passport");
 const roles_guard_1 = require(".././common/guards/roles.guard");
+const roles_decorator_1 = require("./roles.decorator");
 const user_model_1 = require("./user.model");
 const users_service_1 = require("./users.service");
 let UsersController = class UsersController {
@@ -27,10 +28,6 @@ let UsersController = class UsersController {
     }
     async getAllUser() {
         return await this.userService.getAllUsers();
-    }
-    async userProfile(req) {
-        console.log('From controller....');
-        return req.user;
     }
     async getUser(id) {
         return await this.userService.getUser(id);
@@ -47,6 +44,8 @@ let UsersController = class UsersController {
 };
 __decorate([
     (0, common_1.Post)('signup'),
+    (0, roles_decorator_1.Roles)(user_model_1.UserRole.admin, user_model_1.UserRole.superAdmin),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), roles_guard_1.RolesGuard),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -59,15 +58,6 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getAllUser", null);
 __decorate([
-    (0, common_1.Get)('profile'),
-    (0, common_1.SetMetadata)('roles', [user_model_1.UserRole.admin, user_model_1.UserRole.superAdmin]),
-    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), roles_guard_1.RolesGuard),
-    __param(0, (0, common_1.Request)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], UsersController.prototype, "userProfile", null);
-__decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
@@ -76,6 +66,8 @@ __decorate([
 ], UsersController.prototype, "getUser", null);
 __decorate([
     (0, common_1.Patch)(':id'),
+    (0, roles_decorator_1.Roles)(user_model_1.UserRole.admin, user_model_1.UserRole.superAdmin),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), roles_guard_1.RolesGuard),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -84,6 +76,8 @@ __decorate([
 ], UsersController.prototype, "updateUser", null);
 __decorate([
     (0, common_1.Delete)(':id'),
+    (0, roles_decorator_1.Roles)(user_model_1.UserRole.admin, user_model_1.UserRole.superAdmin),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), roles_guard_1.RolesGuard),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),

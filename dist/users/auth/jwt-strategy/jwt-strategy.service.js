@@ -25,8 +25,6 @@ let JwtStrategyService = class JwtStrategyService extends (0, passport_1.Passpor
         this.userService = userService;
     }
     async validate(payloads) {
-        console.log(payloads);
-        console.log('Jwt strategy service...');
         const isValidate = this.userService.isValidateByUser(payloads);
         if (isValidate) {
             return { userId: payloads.userEmail, userName: payloads.userName, userRole: payloads.userRole };

@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Roles = exports.RolesGuard = void 0;
+exports.RolesGuard = void 0;
 const common_1 = require("@nestjs/common");
 const core_1 = require("@nestjs/core");
 let RolesGuard = class RolesGuard {
@@ -17,18 +17,17 @@ let RolesGuard = class RolesGuard {
         this.reflector = reflector;
     }
     canActivate(context) {
-        console.log('calling from roles guard...');
-        const roles = this.reflector.get('roles', context.getHandler());
-        console.log(roles);
-        if (!roles) {
-            return false;
-        }
-        const request = context.switchToHttp().getRequest();
-        const user = request.user;
-        if (user.userRole === 'admin' || user.userRole === 'superadmin') {
-            console.log(user);
+        const requiredRoles = this.reflector.getAllAndOverride('roles', [
+            context.getHandler(),
+            context.getClass()
+        ]);
+        if (!requiredRoles) {
             return true;
         }
+        console.log(requiredRoles);
+        const request = context.switchToHttp().getRequest();
+        const user = request.user;
+        return requiredRoles.some((role) => { var _a; return (_a = user.userRole) === null || _a === void 0 ? void 0 : _a.includes(role); });
     }
 };
 RolesGuard = __decorate([
@@ -36,8 +35,4 @@ RolesGuard = __decorate([
     __metadata("design:paramtypes", [core_1.Reflector])
 ], RolesGuard);
 exports.RolesGuard = RolesGuard;
-function Roles(...roles) {
-    return (0, common_1.applyDecorators)((0, common_1.SetMetadata)('roles', roles), (0, common_1.UseGuards)(RolesGuard));
-}
-exports.Roles = Roles;
 //# sourceMappingURL=roles.guard.js.map

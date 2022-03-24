@@ -34,7 +34,7 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException();
     }
-
+    
     return user;
   }
 
@@ -89,7 +89,6 @@ export class UsersService {
   }
 
   async isValidateByUser(payloads: any) {
-    console.log('From UserService...')
     const foundUser = await this.userModel.findOne({userEmail: payloads.userEmail});
     if(foundUser){
        return true;

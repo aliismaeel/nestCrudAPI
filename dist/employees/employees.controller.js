@@ -14,6 +14,10 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EmployeesController = void 0;
 const common_1 = require("@nestjs/common");
+const passport_1 = require("@nestjs/passport");
+const roles_guard_1 = require("../common/guards/roles.guard");
+const roles_decorator_1 = require("../users/roles.decorator");
+const user_model_1 = require("../users/user.model");
 const employee_service_1 = require("./employee.service");
 let EmployeesController = class EmployeesController {
     constructor(employeeService) {
@@ -21,6 +25,7 @@ let EmployeesController = class EmployeesController {
     }
     ;
     async createEmployee(employee) {
+        console.log('calling from post method of employee...');
         const generatedId = await this.employeeService.createEmployee(employee);
         return { id: generatedId };
     }
@@ -39,6 +44,8 @@ let EmployeesController = class EmployeesController {
 };
 __decorate([
     (0, common_1.Post)(),
+    (0, roles_decorator_1.Roles)(user_model_1.UserRole.admin, user_model_1.UserRole.superAdmin),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), roles_guard_1.RolesGuard),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -59,6 +66,8 @@ __decorate([
 ], EmployeesController.prototype, "getEmployeeHavingJob", null);
 __decorate([
     (0, common_1.Put)(':id'),
+    (0, roles_decorator_1.Roles)(user_model_1.UserRole.admin, user_model_1.UserRole.superAdmin),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), roles_guard_1.RolesGuard),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -67,6 +76,8 @@ __decorate([
 ], EmployeesController.prototype, "updateEmployee", null);
 __decorate([
     (0, common_1.Delete)(':id'),
+    (0, roles_decorator_1.Roles)(user_model_1.UserRole.admin, user_model_1.UserRole.superAdmin),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt'), roles_guard_1.RolesGuard),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),

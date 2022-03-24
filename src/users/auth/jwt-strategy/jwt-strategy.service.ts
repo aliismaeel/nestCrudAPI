@@ -16,8 +16,6 @@ export class JwtStrategyService extends PassportStrategy (Strategy)
     }
 
     async validate(payloads: any){
-        console.log(payloads);
-        console.log('Jwt strategy service...');
         const isValidate = this.userService.isValidateByUser(payloads);
         if(isValidate){
             return { userId: payloads.userEmail, userName: payloads.userName, userRole: payloads.userRole };
