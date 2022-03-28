@@ -15,6 +15,7 @@ export class CaslAbilityFactory {
         can(Action.Manage, 'all');
     }
     else {
+      console.log(user);
         can(Action.Read, 'all'); // read-only access to everything
       }
     
