@@ -17,7 +17,7 @@ export const EmployeeSchema = new mongoose.Schema({
   ]
 });
 
-export interface Employee{
+export class Employee{
   empId: string;
   empName: string;
   empSalary: number;

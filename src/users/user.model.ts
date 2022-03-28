@@ -26,10 +26,10 @@ export const userSchema = new mongoose.Schema({
   }
 })
 
-export interface User {
-  userName: string,
-  userEmail: string,
-  userPassword: string,
+export class User {
+  userName: string;
+  userEmail: string;
+  userPassword: string;
   userRole: UserRole
 }
 

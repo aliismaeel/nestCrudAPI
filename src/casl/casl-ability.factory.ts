@@ -1,9 +1,9 @@
-import { Ability, AbilityBuilder, AbilityClass, InferSubjects } from "@casl/ability";
+import { Ability, AbilityBuilder, AbilityClass, ExtractSubjectType, InferSubjects } from "@casl/ability";
 import { Injectable } from "@nestjs/common";
 import { Employee } from "src/employees/employee.model";
-import { Action, User } from "src/users/user.model";
+import { Action, User } from "../users/user.model";
 
-type Subjects = InferSubjects<User | Employee>| 'all';
+export type Subjects = InferSubjects<typeof User | typeof Employee>| 'all';
 
 export type AppAbility = Ability<[Action, Subjects]>;
 
@@ -19,8 +19,7 @@ export class CaslAbilityFactory {
       }
     
 
-    can(Action.Update, User, { authorId: user.id });
-    cannot(Action.Delete, Article, { isPublished: true });
+    // can(Action.Update, User);
 
     return build({
       // Read https://casl.js.org/v5/en/guide/subject-type-detection#use-classes-as-subject-types for details
