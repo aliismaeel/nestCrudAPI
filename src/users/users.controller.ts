@@ -9,45 +9,61 @@ import { Roles } from './roles.decorator';
 import { Action, User, UserDto, UserRole } from './user.model';
 import { UsersService } from './users.service';
 
+// @Controller('users')
+// export class UsersController {
+//   constructor(private readonly userService: UsersService, private readonly CaslAbilityFactory: CaslAbilityFactory) { }
+
+//   // @Post('signup')
+//   // @Roles(UserRole.admin, UserRole.superAdmin)
+//   // @UseGuards(AuthGuard('jwt'), RolesGuard)
+//   // async createUser(@Body() newUser: User): Promise<User> {
+//   //   return await this.userService.createUser(newUser);
+//   // }
+
+//   @Get()
+//   async getAllUser() {
+//     return await this.userService.getAllUsers();
+//   }
+
+//   @Get(':id')
+//   async getUser(@Param('id') id: string): Promise<User> {
+//     return await this.userService.getUser(id)
+//   }
+
+//   @Patch(':id')
+//   @Roles(UserRole.admin, UserRole.superAdmin)
+//   @UseGuards(AuthGuard('jwt'), RolesGuard)
+//   async updateUser(@Param('id') id: string, @Body() updatedUser: User): Promise<User> {
+//     return await this.userService.updateUser(id, updatedUser);
+//   }
+
+//   @Delete(':id')
+//   @Roles(UserRole.admin, UserRole.superAdmin)
+//   @UseGuards(AuthGuard('jwt'), RolesGuard)
+//   async deleteUser(@Param('id') id: string) {
+//     return await this.userService.deleteUser(id);
+//   }
+
+//   @Post('login')
+//   async login(@Body() loginData:UserDto) {
+//     return await this.userService.login(loginData.userEmail, loginData.userPassword)
+//   }
+  
+// }
+
+//Authorization with CASL
 @Controller('users')
 export class UsersController {
   constructor(private readonly userService: UsersService, private readonly CaslAbilityFactory: CaslAbilityFactory) { }
 
-  // @Post('signup')
-  // @Roles(UserRole.admin, UserRole.superAdmin)
-  // @UseGuards(AuthGuard('jwt'), RolesGuard)
-  // async createUser(@Body() newUser: User): Promise<User> {
-  //   return await this.userService.createUser(newUser);
-  // }
-
   @Post('signup')
   @CheckPermission({action: Action.Create, subject: User})
   @UseGuards(AuthGuard('jwt'), AbilitiesGuard)
-  async createUser(@Req() req, @Body() newUser: User): Promise<User> {
-    const user = req.user;
-    // const CaslAbilityFactory = this.CaslAbilityFactory.createForUser(user);
-    // const allowed = CaslAbilityFactory.can(Action.Create, User);
-    //   if(!allowed){
-    //     throw new ForbiddenException('only admin can create new user!')
-    //   }
-
-      // try {
-      //   ForbiddenError.from(CaslAbilityFactory)
-      //   .setMessage('only admin can create...')
-      //   .throwUnlessCan(Action.Create, User);
-      //   return await this.userService.createUser(newUser);
-      // } catch (error) {
-      //   if(error instanceof ForbiddenError){
-      //       throw new ForbiddenException(error.message)
-      //   }
-      // }
+  async createUser(@Body() newUser: User): Promise<User> {
         return await this.userService.createUser(newUser);
-
   }
 
   @Get()
-  @CheckPermission({action: Action.Read, subject: User})
-  @UseGuards(AuthGuard('jwt'), AbilitiesGuard)
   async getAllUser() {
     return await this.userService.getAllUsers();
   }
@@ -58,15 +74,15 @@ export class UsersController {
   }
 
   @Patch(':id')
-  @Roles(UserRole.admin, UserRole.superAdmin)
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @CheckPermission({action:Action.Update, subject:User})
+  @UseGuards(AuthGuard('jwt'), AbilitiesGuard)
   async updateUser(@Param('id') id: string, @Body() updatedUser: User): Promise<User> {
     return await this.userService.updateUser(id, updatedUser);
   }
 
   @Delete(':id')
-  @Roles(UserRole.admin, UserRole.superAdmin)
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @CheckPermission({action:Action.Delete, subject:User})
+  @UseGuards(AuthGuard('jwt'), AbilitiesGuard)
   async deleteUser(@Param('id') id: string) {
     return await this.userService.deleteUser(id);
   }
@@ -77,3 +93,5 @@ export class UsersController {
   }
   
 }
+
+

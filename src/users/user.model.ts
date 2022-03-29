@@ -35,7 +35,7 @@ export class User {
 
 export class UserDto {
   userEmail: string;
-  userPassword: string;
+  userPassword: string | number;
 }
 
 export interface LoginResp {

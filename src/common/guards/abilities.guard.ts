@@ -4,7 +4,6 @@ import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
 import { AbilityRule } from 'src/casl/abilities.decorator';
 import { CaslAbilityFactory } from 'src/casl/casl-ability.factory';
-import { UserRole } from 'src/users/user.model';
 
 @Injectable()
 export class AbilitiesGuard implements CanActivate {

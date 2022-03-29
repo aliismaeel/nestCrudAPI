@@ -50,7 +50,8 @@ export class UsersService {
       user.userEmail = updatedUser.userEmail
     }
     if (updatedUser.userPassword) {
-      user.userPassword = updatedUser.userPassword
+      const hashedPassword = await this.PasswordHasherService.passwordHash(updatedUser.userPassword)
+      user.userPassword = hashedPassword
     }
     const result = await user.save();
     return result;
